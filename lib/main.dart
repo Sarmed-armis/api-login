@@ -10,6 +10,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
       theme: ThemeData(
         // This is the theme of your application.
@@ -28,24 +29,31 @@ class MyApp extends StatelessWidget {
   }
 }
 
-class checkAuthentication extends StatefulWidget {
+class checkAuthentication extends StatefulWidget
+{
   @override
-  State<StatefulWidget> createState() {
+  State<StatefulWidget> createState()
+  {
     // TODO: implement createState
     return checkAuthenticationState();
   }
+
 }
 
 
 class checkAuthenticationState extends State<checkAuthentication>
 {
 
+
   bool isAuth = false;
   @override
-  void initState() {
+  void initState()
+  {
     _checkIfLoggedIn();
     super.initState();
   }
+
+
 
 
   void _checkIfLoggedIn() async {
@@ -73,8 +81,11 @@ class checkAuthenticationState extends State<checkAuthentication>
     Widget child;
 
     if (isAuth) {
+
       child = HomeScreen();
-    } else {
+    }
+    else {
+
       child = LoginScreen();
     }
 

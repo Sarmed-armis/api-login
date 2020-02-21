@@ -6,15 +6,12 @@ import 'package:laravel_login/src/ScreenContainer/HomeScreen.dart';
 import 'package:laravel_login/src/ScreenContainer/RegisterScreen.dart';
 import 'package:laravel_login/src/ServicesContainer/Network.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:device_id/device_id.dart';
+
 
 class LoginScreen extends StatefulWidget
 {
-  /**
-   *  this is method for call State class for this Screen
-   *
-   *
-   *
-   * **/
+
 
   @override
   State<StatefulWidget> createState() {
@@ -190,20 +187,21 @@ class LoginScreenState extends State<LoginScreen>
     setState(() {
       _isLoading = true;
     });
+
+  //  String imei = await DeviceId.getIMEI;
     var data = {
       'email' : email,
       'password' : password,
-      'phone_id' :'123123'
+      'phone_id' :'ssss'
     };
 
     var res = await Network().authData(data, '/login');
     var body = json.decode(res.body);
 
-    if(body['Status']=="Ok"){
+    if(body['Status']=='Ok'){
 
       SharedPreferences localStorage = await SharedPreferences.getInstance();
       localStorage.setString('token', json.encode(body['Token']));
-      localStorage.setString('user', json.encode(body['user']));
       Navigator.push(
         context,
         new MaterialPageRoute(
