@@ -183,43 +183,6 @@ class LoginScreenState extends State<LoginScreen>
       ),
     );
   }
-  void _login() async{
-    setState(() {
-      _isLoading = true;
-    });
-
-  //  String imei = await DeviceId.getIMEI;
-    var data = {
-      'email' : email,
-      'password' : password,
-      'phone_id' :'ssss'
-    };
-
-    var res = await Network().authData(data, '/login');
-    var body = json.decode(res.body);
-
-    if(body['Status']=='Ok'){
-
-      SharedPreferences localStorage = await SharedPreferences.getInstance();
-      localStorage.setString('token', json.encode(body['Token']));
-      Navigator.push(
-        context,
-        new MaterialPageRoute(
-            builder: (context) => HomeScreen()
-        ),
-      );
-    }else{
-
-      _showMsg(body['Message']);
-    }
-
-    setState(() {
-      _isLoading = false;
-    });
-
-  }
-
-
 
 
 }
