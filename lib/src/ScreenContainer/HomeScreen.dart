@@ -2,12 +2,10 @@ import 'dart:convert';
 
 import 'package:bottom_navy_bar/bottom_navy_bar.dart';
 import 'package:flutter/material.dart';
-import 'package:laravel_login/src/PagerContainer/AtmsPageViewer.dart';
 import 'package:laravel_login/src/PagerContainer/HomePageViewer.dart';
 import 'package:laravel_login/src/PagerContainer/SettingPageViewer.dart';
 import 'package:laravel_login/src/PagerContainer/UserPageViewer.dart';
 import 'package:laravel_login/src/ScreenContainer/LoginScreen.dart';
-import 'package:laravel_login/src/ServicesContainer/Network.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 
@@ -36,7 +34,7 @@ class HomeScreen extends StatefulWidget {
     var zones;
     @override
     void initState(){
-      _loadUserData();
+    
       _pageController = PageController();
 
       controller = new ScrollController()..addListener(_scrollListener);
@@ -44,27 +42,11 @@ class HomeScreen extends StatefulWidget {
 
       super.initState();
     }
-    _loadUserData() async{
+    
 
-      SharedPreferences localStorage = await SharedPreferences.getInstance();
+ 
 
-      var res = await Network().getData('/me');
-      var body = json.decode(res.body);
-      localStorage.setString('user', json.encode(body['user']['name']));
-      var user = jsonDecode(localStorage.getString('user'));
-
-
-
-      GetZones();
-
-      if(user != null) {
-        setState(() {
-           name = user;
-           zones=jsonDecode(localStorage.getString('Zones'));
-        });
-      }
-    }
-
+    
 
 
   @override
@@ -123,7 +105,6 @@ class HomeScreen extends StatefulWidget {
             children: <Widget>[
               HomePageViewer(),
               UserPageViewer(name),
-              AtmsPageViewer(zones,controller),
               SettingPageViewer(),
             ],
           ),
@@ -144,29 +125,7 @@ class HomeScreen extends StatefulWidget {
 
 
 
-    Future<bool> _onBackPressed() {
-      return showDialog(
-        context: context,
-        builder: (context) => new AlertDialog(
-          title: new Text('Are you sure?'),
-          content: new Text('Do you want to exit an App'),
-          actions: <Widget>[
-            new GestureDetector(
-              onTap: () => Navigator.of(context).pop(false),
-              child: Text("NO"),
-            ),
-            SizedBox(height: 16),
-            new GestureDetector(
-              onTap:() {
-                Navigator.of(context).pop(true);
-              },
-              child: Text("YES"),
-            ),
-          ],
-        ),
-      ) ??
-          false;
-    }
+   
 
 
 
@@ -174,19 +133,7 @@ class HomeScreen extends StatefulWidget {
 
 
 
-    void logout() async
-    {
-
-
-      SharedPreferences localStorage = await SharedPreferences.getInstance();
-      localStorage.remove('user');
-      localStorage.remove('token');
-      Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context)=>LoginScreen())
-      );
-
-    }
+  
 
 
 
@@ -237,19 +184,6 @@ class HomeScreen extends StatefulWidget {
     }
 
 
-
-
-
-    GetZones() async{
-
-      SharedPreferences localStorage = await SharedPreferences.getInstance();
-      var res = await Network().getData('/GetZones');
-      var body = json.decode(res.body);
-      localStorage.setString('Zones', json.encode(body['ZonesInfo']));
-
-
-
-    }
 
 
 
